@@ -1,0 +1,189 @@
+{
+  "led-wall-examples": {
+    "description": "Example preset configurations for common LED wall scenarios",
+    "presets": [
+      {
+        "name": "wide-led-wall-3840x1080",
+        "description": "Ultra-wide LED wall - two 1920x1080 panels side-by-side",
+        "display_resolution": {
+          "width": 3840,
+          "height": 1080
+        },
+        "zone1": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "zone2": {
+          "x": 1920,
+          "y": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "use_case": "Two separate content streams on ultra-wide wall"
+      },
+      {
+        "name": "vertical-stack-1920x2160",
+        "description": "Vertical LED stack - two 1920x1080 panels stacked",
+        "display_resolution": {
+          "width": 1920,
+          "height": 2160
+        },
+        "zone1": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "zone2": {
+          "x": 0,
+          "y": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "use_case": "Vertically stacked displays with independent content"
+      },
+      {
+        "name": "stage-backdrop-plus-monitor",
+        "description": "Main stage backdrop with small confidence monitor",
+        "display_resolution": {
+          "width": 1920,
+          "height": 1080
+        },
+        "zone1": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "zone2": {
+          "x": 1440,
+          "y": 810,
+          "width": 480,
+          "height": 270
+        },
+        "use_case": "Zone 1: stage content, Zone 2: presenter notes/timer"
+      },
+      {
+        "name": "quad-wall-top-half",
+        "description": "Quad LED wall - top two panels (2x2 grid)",
+        "display_resolution": {
+          "width": 1920,
+          "height": 1080
+        },
+        "zone1": {
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 540
+        },
+        "zone2": {
+          "x": 960,
+          "y": 0,
+          "width": 960,
+          "height": 540
+        },
+        "use_case": "Two zones in quad configuration (expand with more zones in future)"
+      },
+      {
+        "name": "main-plus-sidebar",
+        "description": "Main content area with sidebar for live feed",
+        "display_resolution": {
+          "width": 1920,
+          "height": 1080
+        },
+        "zone1": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 1080
+        },
+        "zone2": {
+          "x": 1440,
+          "y": 0,
+          "width": 480,
+          "height": 1080
+        },
+        "use_case": "Zone 1: main presentation, Zone 2: live RTSP camera feed"
+      },
+      {
+        "name": "event-dual-camera",
+        "description": "Two camera feeds for live event monitoring",
+        "display_resolution": {
+          "width": 1920,
+          "height": 1080
+        },
+        "zone1": {
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 1080
+        },
+        "zone2": {
+          "x": 960,
+          "y": 0,
+          "width": 960,
+          "height": 1080
+        },
+        "use_case": "Zone 1: RTSP camera 1, Zone 2: RTSP camera 2"
+      },
+      {
+        "name": "custom-led-panels-5760x1080",
+        "description": "Three 1920x1080 LED panels in a row",
+        "display_resolution": {
+          "width": 5760,
+          "height": 1080
+        },
+        "zone1": {
+          "x": 0,
+          "y": 0,
+          "width": 2880,
+          "height": 1080
+        },
+        "zone2": {
+          "x": 2880,
+          "y": 0,
+          "width": 2880,
+          "height": 1080
+        },
+        "use_case": "Ultra-wide triple panel with split content (left 1.5 panels, right 1.5 panels)"
+      },
+      {
+        "name": "portrait-display-1080x1920",
+        "description": "Portrait orientation display (rotated)",
+        "display_resolution": {
+          "width": 1080,
+          "height": 1920
+        },
+        "zone1": {
+          "x": 0,
+          "y": 0,
+          "width": 1080,
+          "height": 960
+        },
+        "zone2": {
+          "x": 0,
+          "y": 960,
+          "width": 1080,
+          "height": 960
+        },
+        "use_case": "Vertical display split top/bottom for signage"
+      }
+    ]
+  },
+  "usage_notes": {
+    "importing_presets": "Use the web interface or API to create these presets manually",
+    "display_resolution": "Always set display resolution first via Settings or API",
+    "testing": "Test with 'stop-all' between configurations to verify positioning",
+    "rtsp_sources": "Replace file sources with rtsp://... URLs for live camera feeds",
+    "performance": "Pi 5 recommended for 4K+ resolutions or dual 1080p streams"
+  },
+  "workflow_example": {
+    "step1": "Set display resolution via API or web interface",
+    "step2": "Create and save preset with desired zone geometries",
+    "step3": "Load preset when needed",
+    "step4": "Start playback in each zone with appropriate sources",
+    "step5": "Save additional presets for different show configurations"
+  }
+}

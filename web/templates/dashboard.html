@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dual-Zone Video Player</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Dual-Zone Video Player</h1>
+            <div class="header-actions">
+                <button id="stop-all-btn" class="btn btn-danger">⏹ Stop All Zones</button>
+                <div class="status-indicator">
+                    <span class="status-dot" id="status-dot"></span>
+                    <span id="status-text">Ready</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-grid">
+            <!-- Visual Canvas Area -->
+            <section class="canvas-section">
+                <div class="section-header">
+                    <h2>Visual Layout</h2>
+                    <div class="display-resolution">
+                        <label>Display:</label>
+                        <input type="number" id="display-width" value="1920" min="640" max="7680">
+                        <span>×</span>
+                        <input type="number" id="display-height" value="1080" min="480" max="4320">
+                        <button id="update-resolution-btn" class="btn btn-small">Update</button>
+                    </div>
+                </div>
+                
+                <div class="canvas-wrapper">
+                    <canvas id="layout-canvas" width="960" height="540"></canvas>
+                    <div class="canvas-info">
+                        <span>Drag zones to position • Drag corners to resize</span>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <button class="btn btn-small" onclick="applyPresetLayout('fullscreen-zone1')">Zone 1 Fullscreen</button>
+                    <button class="btn btn-small" onclick="applyPresetLayout('fullscreen-zone2')">Zone 2 Fullscreen</button>
+                    <button class="btn btn-small" onclick="applyPresetLayout('side-by-side')">Side-by-Side</button>
+                    <button class="btn btn-small" onclick="applyPresetLayout('top-bottom')">Top-Bottom</button>
+                    <button class="btn btn-small" onclick="applyPresetLayout('pip-bottom-right')">PiP</button>
+                </div>
+            </section>
+
+            <!-- Zone Controls -->
+            <section class="controls-section">
+                <!-- Zone 1 Controls -->
+                <div class="zone-panel" id="zone1-panel">
+                    <div class="zone-header">
+                        <h3>Zone 1</h3>
+                        <div class="zone-status" id="zone1-status">●</div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Source:</label>
+                        <div class="source-input-group">
+                            <select id="zone1-source-type">
+                                <option value="file">Local File</option>
+                                <option value="rtsp">RTSP Stream</option>
+                            </select>
+                            <select id="zone1-file-select" class="file-select">
+                                <option value="">-- Select File --</option>
+                            </select>
+                            <input type="text" id="zone1-rtsp-input" placeholder="rtsp://..." style="display:none;">
+                        </div>
+                        <button id="zone1-play-btn" class="btn btn-primary">▶ Play</button>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Geometry:</label>
+                        <div class="geometry-inputs">
+                            <div class="input-pair">
+                                <label>X:</label>
+                                <input type="number" id="zone1-x" value="0" min="0">
+                            </div>
+                            <div class="input-pair">
+                                <label>Y:</label>
+                                <input type="number" id="zone1-y" value="0" min="0">
+                            </div>
+                            <div class="input-pair">
+                                <label>Width:</label>
+                                <input type="number" id="zone1-width" value="960" min="1">
+                            </div>
+                            <div class="input-pair">
+                                <label>Height:</label>
+                                <input type="number" id="zone1-height" value="1080" min="1">
+                            </div>
+                        </div>
+                        <button id="zone1-apply-geometry-btn" class="btn btn-secondary">Apply Geometry</button>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Volume:</label>
+                        <input type="range" id="zone1-volume" min="0" max="100" value="50">
+                        <span id="zone1-volume-value">50</span>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Loop:</label>
+                        <input type="checkbox" id="zone1-loop" checked>
+                    </div>
+
+                    <div class="playback-controls">
+                        <button id="zone1-pause-btn" class="btn">⏸ Pause</button>
+                        <button id="zone1-seek-back-btn" class="btn">⏪ -10s</button>
+                        <button id="zone1-seek-forward-btn" class="btn">⏩ +10s</button>
+                        <button id="zone1-stop-btn" class="btn btn-danger">⏹ Stop</button>
+                    </div>
+                </div>
+
+                <!-- Zone 2 Controls -->
+                <div class="zone-panel" id="zone2-panel">
+                    <div class="zone-header">
+                        <h3>Zone 2</h3>
+                        <div class="zone-status" id="zone2-status">●</div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Source:</label>
+                        <div class="source-input-group">
+                            <select id="zone2-source-type">
+                                <option value="file">Local File</option>
+                                <option value="rtsp">RTSP Stream</option>
+                            </select>
+                            <select id="zone2-file-select" class="file-select">
+                                <option value="">-- Select File --</option>
+                            </select>
+                            <input type="text" id="zone2-rtsp-input" placeholder="rtsp://..." style="display:none;">
+                        </div>
+                        <button id="zone2-play-btn" class="btn btn-primary">▶ Play</button>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Geometry:</label>
+                        <div class="geometry-inputs">
+                            <div class="input-pair">
+                                <label>X:</label>
+                                <input type="number" id="zone2-x" value="960" min="0">
+                            </div>
+                            <div class="input-pair">
+                                <label>Y:</label>
+                                <input type="number" id="zone2-y" value="0" min="0">
+                            </div>
+                            <div class="input-pair">
+                                <label>Width:</label>
+                                <input type="number" id="zone2-width" value="960" min="1">
+                            </div>
+                            <div class="input-pair">
+                                <label>Height:</label>
+                                <input type="number" id="zone2-height" value="1080" min="1">
+                            </div>
+                        </div>
+                        <button id="zone2-apply-geometry-btn" class="btn btn-secondary">Apply Geometry</button>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Volume:</label>
+                        <input type="range" id="zone2-volume" min="0" max="100" value="50">
+                        <span id="zone2-volume-value">50</span>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Loop:</label>
+                        <input type="checkbox" id="zone2-loop" checked>
+                    </div>
+
+                    <div class="playback-controls">
+                        <button id="zone2-pause-btn" class="btn">⏸ Pause</button>
+                        <button id="zone2-seek-back-btn" class="btn">⏪ -10s</button>
+                        <button id="zone2-seek-forward-btn" class="btn">⏩ +10s</button>
+                        <button id="zone2-stop-btn" class="btn btn-danger">⏹ Stop</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- File Management & Presets -->
+            <section class="sidebar">
+                <!-- File Upload -->
+                <div class="panel">
+                    <h3>📁 File Management</h3>
+                    <div class="file-upload">
+                        <input type="file" id="file-upload-input" accept="video/*" style="display:none;">
+                        <button id="upload-btn" class="btn btn-primary full-width">Upload Video</button>
+                        <div id="upload-progress" style="display:none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                            <span id="upload-status">Uploading...</span>
+                        </div>
+                    </div>
+                    <div id="file-list" class="file-list"></div>
+                </div>
+
+                <!-- Presets -->
+                <div class="panel">
+                    <h3>💾 Presets</h3>
+                    <div class="preset-controls">
+                        <input type="text" id="preset-name-input" placeholder="Preset name...">
+                        <input type="text" id="preset-desc-input" placeholder="Description (optional)">
+                        <button id="save-preset-btn" class="btn btn-primary full-width">Save Current Layout</button>
+                    </div>
+                    <div id="preset-list" class="preset-list"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/api-client.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/canvas-controller.js') }}"></script>
+</body>
+</html>
